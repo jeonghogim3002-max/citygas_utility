@@ -9,7 +9,12 @@ from google import genai
 from google.genai import types as genai_types
 
 load_dotenv()
-_gemini_key = os.getenv("GEMINI_API_KEY") or st.secrets.get("GEMINI_API_KEY", "")
+_gemini_key = os.getenv("GEMINI_API_KEY", "")
+if not _gemini_key:
+    try:
+        _gemini_key = st.secrets.get("GEMINI_API_KEY", "")
+    except Exception:
+        _gemini_key = ""
 _gemini_client = genai.Client(api_key=_gemini_key) if _gemini_key else None
 
 st.set_page_config(
